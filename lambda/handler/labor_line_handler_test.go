@@ -78,7 +78,10 @@ func TestLaborLineHandler_HandleAppSyncEvent_CreateLaborLine(t *testing.T) {
 	}
 
 	event := models.AppSyncEvent{
-		FieldName: "createLaborLine",
+		Info: models.AppSyncEventInfo{
+			FieldName:      "createLaborLine",
+			ParentTypeName: "Mutation",
+		},
 		Arguments: map[string]interface{}{
 			"input": map[string]interface{}{
 				"contactId": input.ContactID,
