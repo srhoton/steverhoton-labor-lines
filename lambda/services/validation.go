@@ -101,11 +101,14 @@ func NewValidationServiceWithEmbeddedSchema() ValidationService {
 	}`
 
 	schemaLoader := gojsonschema.NewStringLoader(schemaJSON)
-	schema, _ := gojsonschema.NewSchema(schemaLoader)
+	schema, err := gojsonschema.NewSchema(schemaLoader)
+	if err != nil {
+		return nil, fmt.Errorf("loading embedded JSON schema: %w", err)
+	}
 
 	return &validationService{
 		schema: schema,
-	}
+	}, nil
 }
 
 // ValidateCreateInput validates a CreateLaborLineInput against the JSON schema.
