@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schemas/labor-line.schema.json",
+  "title": "Labor Line",
+  "description": "A labor line for maintenance work order tasks",
+  "type": "object",
+  "properties": {
+    "laborLineId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the labor line"
+    },
+    "contactId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identifier of the contact who will perform the work"
+    },
+    "accountId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Account identifier (used as DynamoDB partition key)"
+    },
+    "taskId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Task identifier (used in DynamoDB sort key)"
+    },
+    "partId": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Optional list of part identifiers required for the work",
+      "uniqueItems": true
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000
+      },
+      "description": "Optional notes describing the work to be performed"
+    }
+  },
+  "required": [
+    "laborLineId",
+    "contactId",
+    "accountId",
+    "taskId"
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "laborLineId": "550e8400-e29b-41d4-a716-446655440000",
+      "contactId": "550e8400-e29b-41d4-a716-446655440001",
+      "accountId": "550e8400-e29b-41d4-a716-446655440002",
+      "taskId": "550e8400-e29b-41d4-a716-446655440003",
+      "partId": [
+        "550e8400-e29b-41d4-a716-446655440004",
+        "550e8400-e29b-41d4-a716-446655440005"
+      ],
+      "notes": [
+        "Replace worn brake pads",
+        "Check brake fluid level"
+      ]
+    },
+    {
+      "laborLineId": "550e8400-e29b-41d4-a716-446655440006",
+      "contactId": "550e8400-e29b-41d4-a716-446655440007",
+      "accountId": "550e8400-e29b-41d4-a716-446655440008",
+      "taskId": "550e8400-e29b-41d4-a716-446655440009"
+    }
+  ]
+}
