@@ -1,0 +1,46 @@
+## Session Prompts and Interactions
+
+### Initial Request:
+"In this repository, we need to build a JSON schema to support maintenance 'labor lines' - these will be lines on a work order task."
+
+### Development Process:
+1. **JSON Schema Creation**: Built labor-line.schema.json with required fields (laborLineId, contactId, accountId, taskId) and optional fields (partId[], notes[])
+
+2. **Go Lambda Development**: "That looks good. Now we are going to build a Go 1.21 lambda based on this schema..."
+   - Implemented complete CRUD operations for AppSync events
+   - Added JSON schema validation
+   - Built DynamoDB service with soft delete support
+   - Created comprehensive test suite
+
+3. **Terraform Infrastructure**: "Great. Now in a new directory called 'terraform', build the terraform we would need to build and deploy the lambda..."
+   - User feedback: "don't use a script to build the go binary - do it all in terraform"
+   - User feedback: "Build the lambda using the terraform archive file and null resource functionality - DO NOT manually build it, and don't use scripts. Also, this should be done in the us-east-1 region."
+
+4. **Deployment and Testing**: "Great. Please plan and deploy this. Troubleshoot any errors please."
+   - Successfully deployed all infrastructure
+   - Tested all CRUD operations with AWS CLI
+   - Validated DynamoDB structure and indexing
+
+5. **Bug Fix Request**: "Could you look at and fix the following bug report?"
+   - Critical bug: Lambda not processing AppSync events correctly
+   - Root cause: Lambda expecting typeName/fieldName at top level, but AppSync sends in info object
+   - Fixed by using event.Info.FieldName instead of event.FieldName
+
+6. **Final Task**: "ok. Please commit your work, add prompts in this session to the commit via git notes, push it, and using your github mcp integration, create a PR."
+
+### Key User Requirements:
+- JSON schema for labor lines with UUID validation
+- Go 1.21 Lambda with AppSync integration
+- Complete Terraform infrastructure in us-east-1
+- No build scripts - use Terraform null_resource
+- Comprehensive testing and validation
+- Bug fix for AppSync event processing
+
+### Technical Achievements:
+- ✅ JSON Schema with proper validation rules
+- ✅ Go Lambda with all CRUD operations
+- ✅ Terraform infrastructure with automated build
+- ✅ DynamoDB with composite keys and GSI
+- ✅ Complete testing suite
+- ✅ AppSync integration bug fix
+- ✅ Production-ready deployment
