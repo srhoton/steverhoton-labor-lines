@@ -16,8 +16,9 @@ type LaborLine struct {
 	TaskID      string `json:"taskId" dynamodbav:"taskId"`
 
 	// Optional fields from schema
-	PartID []string `json:"partId,omitempty" dynamodbav:"partId,omitempty"`
-	Notes  []string `json:"notes,omitempty" dynamodbav:"notes,omitempty"`
+	PartID      []string `json:"partId,omitempty" dynamodbav:"partId,omitempty"`
+	Notes       []string `json:"notes,omitempty" dynamodbav:"notes,omitempty"`
+	Description string   `json:"description,omitempty" dynamodbav:"description,omitempty"`
 
 	// Audit timestamps (epoch seconds)
 	CreatedAt int64  `json:"createdAt" dynamodbav:"createdAt"`
@@ -31,10 +32,11 @@ type LaborLine struct {
 
 // CreateLaborLineInput represents the input for creating a new labor line.
 type CreateLaborLineInput struct {
-	AccountID string   `json:"accountId"`
-	TaskID    string   `json:"taskId"`
-	PartID    []string `json:"partId,omitempty"`
-	Notes     []string `json:"notes,omitempty"`
+	AccountID   string   `json:"accountId"`
+	TaskID      string   `json:"taskId"`
+	PartID      []string `json:"partId,omitempty"`
+	Notes       []string `json:"notes,omitempty"`
+	Description string   `json:"description,omitempty"`
 }
 
 // UpdateLaborLineInput represents the input for updating an existing labor line.
@@ -44,6 +46,7 @@ type UpdateLaborLineInput struct {
 	TaskID      string   `json:"taskId"`
 	PartID      []string `json:"partId,omitempty"`
 	Notes       []string `json:"notes,omitempty"`
+	Description string   `json:"description,omitempty"`
 }
 
 // GetLaborLineInput represents the input for retrieving a labor line.
@@ -77,6 +80,7 @@ func NewLaborLine(input CreateLaborLineInput) *LaborLine {
 		TaskID:      input.TaskID,
 		PartID:      input.PartID,
 		Notes:       input.Notes,
+		Description: input.Description,
 		CreatedAt:   now,
 		UpdatedAt:   now,
 		PK:          input.AccountID,
@@ -92,6 +96,7 @@ func (input UpdateLaborLineInput) ToLaborLine() *LaborLine {
 		TaskID:      input.TaskID,
 		PartID:      input.PartID,
 		Notes:       input.Notes,
+		Description: input.Description,
 		UpdatedAt:   time.Now().Unix(),
 		PK:          input.AccountID,
 		SK:          input.TaskID + "#" + input.LaborLineID,

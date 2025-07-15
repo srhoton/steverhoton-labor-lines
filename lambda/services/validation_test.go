@@ -11,12 +11,14 @@ import (
 )
 
 func TestNewValidationServiceWithEmbeddedSchema(t *testing.T) {
-	validationService := NewValidationServiceWithEmbeddedSchema()
+	validationService, err := NewValidationServiceWithEmbeddedSchema()
+	require.NoError(t, err)
 	assert.NotNil(t, validationService)
 }
 
 func TestValidationService_ValidateCreateInput(t *testing.T) {
-	validationService := NewValidationServiceWithEmbeddedSchema()
+	validationService, err := NewValidationServiceWithEmbeddedSchema()
+	require.NoError(t, err)
 
 	tests := []struct {
 		name      string
@@ -27,10 +29,11 @@ func TestValidationService_ValidateCreateInput(t *testing.T) {
 		{
 			name: "Valid input with all fields",
 			input: models.CreateLaborLineInput{
-				AccountID: uuid.New().String(),
-				TaskID:    uuid.New().String(),
-				PartID:    []string{uuid.New().String(), uuid.New().String()},
-				Notes:     []string{"Valid note", "Another valid note"},
+				AccountID:   uuid.New().String(),
+				TaskID:      uuid.New().String(),
+				PartID:      []string{uuid.New().String(), uuid.New().String()},
+				Notes:       []string{"Valid note", "Another valid note"},
+				Description: "Complete brake system maintenance and inspection",
 			},
 			wantError: false,
 		},
@@ -102,6 +105,42 @@ func TestValidationService_ValidateCreateInput(t *testing.T) {
 			},
 			wantError: true,
 		},
+		{
+			name: "Valid description",
+			input: models.CreateLaborLineInput{
+				AccountID:   uuid.New().String(),
+				TaskID:      uuid.New().String(),
+				Description: "This is a valid description for testing purposes",
+			},
+			wantError: false,
+		},
+		{
+			name: "Empty description",
+			input: models.CreateLaborLineInput{
+				AccountID:   uuid.New().String(),
+				TaskID:      uuid.New().String(),
+				Description: "",
+			},
+			wantError: false,
+		},
+		{
+			name: "Description at max length",
+			input: models.CreateLaborLineInput{
+				AccountID:   uuid.New().String(),
+				TaskID:      uuid.New().String(),
+				Description: generateLongString(1000),
+			},
+			wantError: false,
+		},
+		{
+			name: "Description too long",
+			input: models.CreateLaborLineInput{
+				AccountID:   uuid.New().String(),
+				TaskID:      uuid.New().String(),
+				Description: generateLongString(1001),
+			},
+			wantError: true,
+		},
 	}
 
 	for _, tt := range tests {
@@ -121,7 +160,8 @@ func TestValidationService_ValidateCreateInput(t *testing.T) {
 }
 
 func TestValidationService_ValidateUpdateInput(t *testing.T) {
-	validationService := NewValidationServiceWithEmbeddedSchema()
+	validationService, err := NewValidationServiceWithEmbeddedSchema()
+	require.NoError(t, err)
 
 	tests := []struct {
 		name      string
@@ -137,6 +177,7 @@ func TestValidationService_ValidateUpdateInput(t *testing.T) {
 				TaskID:      uuid.New().String(),
 				PartID:      []string{uuid.New().String()},
 				Notes:       []string{"Updated note"},
+				Description: "Updated maintenance description",
 			},
 			wantError: false,
 		},
@@ -167,6 +208,36 @@ func TestValidationService_ValidateUpdateInput(t *testing.T) {
 			wantError: true,
 			errorMsg:  "invalid UUID format",
 		},
+		{
+			name: "Valid update with description",
+			input: models.UpdateLaborLineInput{
+				LaborLineID: uuid.New().String(),
+				AccountID:   uuid.New().String(),
+				TaskID:      uuid.New().String(),
+				Description: "Updated description for maintenance work",
+			},
+			wantError: false,
+		},
+		{
+			name: "Valid update with empty description",
+			input: models.UpdateLaborLineInput{
+				LaborLineID: uuid.New().String(),
+				AccountID:   uuid.New().String(),
+				TaskID:      uuid.New().String(),
+				Description: "",
+			},
+			wantError: false,
+		},
+		{
+			name: "Update with description too long",
+			input: models.UpdateLaborLineInput{
+				LaborLineID: uuid.New().String(),
+				AccountID:   uuid.New().String(),
+				TaskID:      uuid.New().String(),
+				Description: generateLongString(1001),
+			},
+			wantError: true,
+		},
 	}
 
 	for _, tt := range tests {
@@ -186,7 +257,9 @@ func TestValidationService_ValidateUpdateInput(t *testing.T) {
 }
 
 func TestValidationService_validateUUIDs(t *testing.T) {
-	validationService := NewValidationServiceWithEmbeddedSchema().(*validationService)
+	vs, err := NewValidationServiceWithEmbeddedSchema()
+	require.NoError(t, err)
+	validationService := vs.(*validationService)
 
 	tests := []struct {
 		name      string

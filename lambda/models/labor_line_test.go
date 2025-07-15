@@ -17,10 +17,11 @@ func TestNewLaborLine(t *testing.T) {
 		{
 			name: "Valid input with all fields",
 			input: CreateLaborLineInput{
-				AccountID: uuid.New().String(),
-				TaskID:    uuid.New().String(),
-				PartID:    []string{uuid.New().String(), uuid.New().String()},
-				Notes:     []string{"First note", "Second note"},
+				AccountID:   uuid.New().String(),
+				TaskID:      uuid.New().String(),
+				PartID:      []string{uuid.New().String(), uuid.New().String()},
+				Notes:       []string{"First note", "Second note"},
+				Description: "Complete brake system maintenance",
 			},
 		},
 		{
@@ -45,6 +46,7 @@ func TestNewLaborLine(t *testing.T) {
 			// Verify optional fields
 			assert.Equal(t, tt.input.PartID, laborLine.PartID)
 			assert.Equal(t, tt.input.Notes, laborLine.Notes)
+			assert.Equal(t, tt.input.Description, laborLine.Description)
 
 			// Verify timestamps
 			assert.GreaterOrEqual(t, laborLine.CreatedAt, startTime)
@@ -70,6 +72,7 @@ func TestUpdateLaborLineInput_ToLaborLine(t *testing.T) {
 		TaskID:      uuid.New().String(),
 		PartID:      []string{uuid.New().String()},
 		Notes:       []string{"Updated note"},
+		Description: "Updated brake system maintenance task",
 	}
 
 	startTime := time.Now().Unix()
@@ -81,6 +84,7 @@ func TestUpdateLaborLineInput_ToLaborLine(t *testing.T) {
 	assert.Equal(t, input.TaskID, laborLine.TaskID)
 	assert.Equal(t, input.PartID, laborLine.PartID)
 	assert.Equal(t, input.Notes, laborLine.Notes)
+	assert.Equal(t, input.Description, laborLine.Description)
 
 	// Verify DynamoDB keys
 	assert.Equal(t, input.AccountID, laborLine.PK)

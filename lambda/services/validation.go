@@ -43,7 +43,7 @@ func NewValidationService(schemaPath string) (ValidationService, error) {
 
 // NewValidationServiceWithEmbeddedSchema creates a validation service with embedded schema.
 // This is useful for deployment where we don't want to read files at runtime.
-func NewValidationServiceWithEmbeddedSchema() ValidationService {
+func NewValidationServiceWithEmbeddedSchema() (ValidationService, error) {
 	// Embedded schema JSON - matches the labor-line.schema.json file
 	schemaJSON := `{
 		"$schema": "http://json-schema.org/draft-07/schema#",
@@ -84,6 +84,11 @@ func NewValidationServiceWithEmbeddedSchema() ValidationService {
 					"maxLength": 1000
 				},
 				"description": "Optional notes describing the work to be performed"
+			},
+			"description": {
+				"type": "string",
+				"maxLength": 1000,
+				"description": "Optional description of the labor line work"
 			}
 		},
 		"required": [
@@ -120,6 +125,9 @@ func (s *validationService) ValidateCreateInput(input models.CreateLaborLineInpu
 	if input.Notes != nil {
 		validationData["notes"] = input.Notes
 	}
+	if input.Description != "" {
+		validationData["description"] = input.Description
+	}
 
 	return s.validateData(validationData)
 }
@@ -137,6 +145,9 @@ func (s *validationService) ValidateUpdateInput(input models.UpdateLaborLineInpu
 	}
 	if input.Notes != nil {
 		validationData["notes"] = input.Notes
+	}
+	if input.Description != "" {
+		validationData["description"] = input.Description
 	}
 
 	return s.validateData(validationData)

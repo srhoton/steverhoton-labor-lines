@@ -44,7 +44,15 @@ func LambdaHandler(ctx context.Context, event models.AppSyncEvent) (*models.AppS
 
 	// Create services
 	dynamoDBService := services.NewDynamoDBService(dynamoClient, tableName)
-	validationService := services.NewValidationServiceWithEmbeddedSchema()
+	validationService, err := services.NewValidationServiceWithEmbeddedSchema()
+	if err != nil {
+		return &models.AppSyncResponse{
+			Error: &models.AppSyncError{
+				Message: fmt.Sprintf("failed to create validation service: %v", err),
+				Type:    "InternalError",
+			},
+		}, nil
+	}
 
 	// Create handler
 	laborLineHandler := handler.NewLaborLineHandler(dynamoDBService, validationService)
