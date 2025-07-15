@@ -56,7 +56,6 @@ func TestDynamoDBService_CreateLaborLine(t *testing.T) {
 
 	laborLine := &models.LaborLine{
 		LaborLineID: uuid.New().String(),
-		ContactID:   uuid.New().String(),
 		AccountID:   uuid.New().String(),
 		TaskID:      uuid.New().String(),
 		CreatedAt:   time.Now().Unix(),
@@ -86,7 +85,6 @@ func TestDynamoDBService_GetLaborLine(t *testing.T) {
 
 	laborLine := &models.LaborLine{
 		LaborLineID: laborLineID,
-		ContactID:   uuid.New().String(),
 		AccountID:   accountID,
 		TaskID:      taskID,
 		CreatedAt:   time.Now().Unix(),
@@ -149,7 +147,6 @@ func TestDynamoDBService_GetLaborLine_SoftDeleted(t *testing.T) {
 
 	laborLine := &models.LaborLine{
 		LaborLineID: laborLineID,
-		ContactID:   uuid.New().String(),
 		AccountID:   accountID,
 		TaskID:      taskID,
 		CreatedAt:   time.Now().Unix(),
@@ -187,7 +184,6 @@ func TestDynamoDBService_UpdateLaborLine(t *testing.T) {
 
 	existingLaborLine := &models.LaborLine{
 		LaborLineID: laborLineID,
-		ContactID:   uuid.New().String(),
 		AccountID:   accountID,
 		TaskID:      taskID,
 		CreatedAt:   time.Now().Unix() - 100,
@@ -198,7 +194,6 @@ func TestDynamoDBService_UpdateLaborLine(t *testing.T) {
 
 	updateLaborLine := &models.LaborLine{
 		LaborLineID: laborLineID,
-		ContactID:   uuid.New().String(),
 		AccountID:   accountID,
 		TaskID:      taskID,
 		UpdatedAt:   time.Now().Unix(),
@@ -233,7 +228,6 @@ func TestDynamoDBService_DeleteLaborLine(t *testing.T) {
 
 	existingLaborLine := &models.LaborLine{
 		LaborLineID: laborLineID,
-		ContactID:   uuid.New().String(),
 		AccountID:   accountID,
 		TaskID:      taskID,
 		CreatedAt:   time.Now().Unix(),
@@ -274,7 +268,6 @@ func TestDynamoDBService_ListLaborLines(t *testing.T) {
 
 	laborLine1 := &models.LaborLine{
 		LaborLineID: uuid.New().String(),
-		ContactID:   uuid.New().String(),
 		AccountID:   accountID,
 		TaskID:      taskID,
 		CreatedAt:   time.Now().Unix(),
@@ -285,7 +278,6 @@ func TestDynamoDBService_ListLaborLines(t *testing.T) {
 
 	laborLine2 := &models.LaborLine{
 		LaborLineID: uuid.New().String(),
-		ContactID:   uuid.New().String(),
 		AccountID:   accountID,
 		TaskID:      taskID,
 		CreatedAt:   time.Now().Unix(),

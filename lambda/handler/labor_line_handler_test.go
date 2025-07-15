@@ -72,19 +72,16 @@ func TestLaborLineHandler_HandleAppSyncEvent_CreateLaborLine(t *testing.T) {
 	handler := NewLaborLineHandler(dynamoDBService, validationService)
 
 	input := models.CreateLaborLineInput{
-		ContactID: uuid.New().String(),
 		AccountID: uuid.New().String(),
 		TaskID:    uuid.New().String(),
 	}
 
 	event := models.AppSyncEvent{
-		Info: models.AppSyncEventInfo{
-			FieldName:      "createLaborLine",
-			ParentTypeName: "Mutation",
+		Info: models.AppSyncInfo{
+			FieldName: "createLaborLine",
 		},
 		Arguments: map[string]interface{}{
 			"input": map[string]interface{}{
-				"contactId": input.ContactID,
 				"accountId": input.AccountID,
 				"taskId":    input.TaskID,
 			},
@@ -92,11 +89,11 @@ func TestLaborLineHandler_HandleAppSyncEvent_CreateLaborLine(t *testing.T) {
 	}
 
 	validationService.On("ValidateCreateInput", mock.MatchedBy(func(i models.CreateLaborLineInput) bool {
-		return i.ContactID == input.ContactID && i.AccountID == input.AccountID && i.TaskID == input.TaskID
+		return i.AccountID == input.AccountID && i.TaskID == input.TaskID
 	})).Return(nil)
 
 	dynamoDBService.On("CreateLaborLine", mock.Anything, mock.MatchedBy(func(ll *models.LaborLine) bool {
-		return ll.ContactID == input.ContactID && ll.AccountID == input.AccountID && ll.TaskID == input.TaskID
+		return ll.AccountID == input.AccountID && ll.TaskID == input.TaskID
 	})).Return(nil)
 
 	response, err := handler.HandleAppSyncEvent(context.Background(), event)
@@ -109,7 +106,6 @@ func TestLaborLineHandler_HandleAppSyncEvent_CreateLaborLine(t *testing.T) {
 	// Verify the response contains a labor line
 	laborLine, ok := response.Data.(*models.LaborLine)
 	require.True(t, ok)
-	assert.Equal(t, input.ContactID, laborLine.ContactID)
 	assert.Equal(t, input.AccountID, laborLine.AccountID)
 	assert.Equal(t, input.TaskID, laborLine.TaskID)
 
@@ -123,11 +119,12 @@ func TestLaborLineHandler_HandleAppSyncEvent_CreateLaborLine_ValidationError(t *
 	handler := NewLaborLineHandler(dynamoDBService, validationService)
 
 	event := models.AppSyncEvent{
-		FieldName: "createLaborLine",
+		Info: models.AppSyncInfo{
+			FieldName: "createLaborLine",
+		},
 		Arguments: map[string]interface{}{
 			"input": map[string]interface{}{
-				"contactId": "invalid-uuid",
-				"accountId": uuid.New().String(),
+				"accountId": "invalid-uuid",
 				"taskId":    uuid.New().String(),
 			},
 		},
@@ -157,13 +154,14 @@ func TestLaborLineHandler_HandleAppSyncEvent_GetLaborLine(t *testing.T) {
 
 	expectedLaborLine := &models.LaborLine{
 		LaborLineID: laborLineID,
-		ContactID:   uuid.New().String(),
 		AccountID:   accountID,
 		TaskID:      taskID,
 	}
 
 	event := models.AppSyncEvent{
-		FieldName: "getLaborLine",
+		Info: models.AppSyncInfo{
+			FieldName: "getLaborLine",
+		},
 		Arguments: map[string]interface{}{
 			"input": map[string]interface{}{
 				"accountId":   accountID,
@@ -195,7 +193,9 @@ func TestLaborLineHandler_HandleAppSyncEvent_GetLaborLine_NotFound(t *testing.T)
 	handler := NewLaborLineHandler(dynamoDBService, validationService)
 
 	event := models.AppSyncEvent{
-		FieldName: "getLaborLine",
+		Info: models.AppSyncInfo{
+			FieldName: "getLaborLine",
+		},
 		Arguments: map[string]interface{}{
 			"input": map[string]interface{}{
 				"accountId":   uuid.New().String(),
@@ -225,24 +225,23 @@ func TestLaborLineHandler_HandleAppSyncEvent_UpdateLaborLine(t *testing.T) {
 
 	input := models.UpdateLaborLineInput{
 		LaborLineID: uuid.New().String(),
-		ContactID:   uuid.New().String(),
 		AccountID:   uuid.New().String(),
 		TaskID:      uuid.New().String(),
 	}
 
 	updatedLaborLine := &models.LaborLine{
 		LaborLineID: input.LaborLineID,
-		ContactID:   input.ContactID,
 		AccountID:   input.AccountID,
 		TaskID:      input.TaskID,
 	}
 
 	event := models.AppSyncEvent{
-		FieldName: "updateLaborLine",
+		Info: models.AppSyncInfo{
+			FieldName: "updateLaborLine",
+		},
 		Arguments: map[string]interface{}{
 			"input": map[string]interface{}{
 				"laborLineId": input.LaborLineID,
-				"contactId":   input.ContactID,
 				"accountId":   input.AccountID,
 				"taskId":      input.TaskID,
 			},
@@ -270,7 +269,9 @@ func TestLaborLineHandler_HandleAppSyncEvent_DeleteLaborLine(t *testing.T) {
 	handler := NewLaborLineHandler(dynamoDBService, validationService)
 
 	event := models.AppSyncEvent{
-		FieldName: "deleteLaborLine",
+		Info: models.AppSyncInfo{
+			FieldName: "deleteLaborLine",
+		},
 		Arguments: map[string]interface{}{
 			"input": map[string]interface{}{
 				"accountId":   uuid.New().String(),
@@ -306,20 +307,20 @@ func TestLaborLineHandler_HandleAppSyncEvent_ListLaborLines(t *testing.T) {
 	expectedLaborLines := []*models.LaborLine{
 		{
 			LaborLineID: uuid.New().String(),
-			ContactID:   uuid.New().String(),
 			AccountID:   accountID,
 			TaskID:      uuid.New().String(),
 		},
 		{
 			LaborLineID: uuid.New().String(),
-			ContactID:   uuid.New().String(),
 			AccountID:   accountID,
 			TaskID:      uuid.New().String(),
 		},
 	}
 
 	event := models.AppSyncEvent{
-		FieldName: "listLaborLines",
+		Info: models.AppSyncInfo{
+			FieldName: "listLaborLines",
+		},
 		Arguments: map[string]interface{}{
 			"input": map[string]interface{}{
 				"accountId": accountID,
@@ -345,7 +346,9 @@ func TestLaborLineHandler_HandleAppSyncEvent_UnsupportedOperation(t *testing.T) 
 	handler := NewLaborLineHandler(dynamoDBService, validationService)
 
 	event := models.AppSyncEvent{
-		FieldName: "unsupportedOperation",
+		Info: models.AppSyncInfo{
+			FieldName: "unsupportedOperation",
+		},
 		Arguments: map[string]interface{}{},
 	}
 

@@ -17,7 +17,6 @@ func TestNewLaborLine(t *testing.T) {
 		{
 			name: "Valid input with all fields",
 			input: CreateLaborLineInput{
-				ContactID: uuid.New().String(),
 				AccountID: uuid.New().String(),
 				TaskID:    uuid.New().String(),
 				PartID:    []string{uuid.New().String(), uuid.New().String()},
@@ -27,7 +26,6 @@ func TestNewLaborLine(t *testing.T) {
 		{
 			name: "Valid input with required fields only",
 			input: CreateLaborLineInput{
-				ContactID: uuid.New().String(),
 				AccountID: uuid.New().String(),
 				TaskID:    uuid.New().String(),
 			},
@@ -41,7 +39,6 @@ func TestNewLaborLine(t *testing.T) {
 
 			// Verify required fields
 			assert.NotEmpty(t, laborLine.LaborLineID)
-			assert.Equal(t, tt.input.ContactID, laborLine.ContactID)
 			assert.Equal(t, tt.input.AccountID, laborLine.AccountID)
 			assert.Equal(t, tt.input.TaskID, laborLine.TaskID)
 
@@ -69,7 +66,6 @@ func TestNewLaborLine(t *testing.T) {
 func TestUpdateLaborLineInput_ToLaborLine(t *testing.T) {
 	input := UpdateLaborLineInput{
 		LaborLineID: uuid.New().String(),
-		ContactID:   uuid.New().String(),
 		AccountID:   uuid.New().String(),
 		TaskID:      uuid.New().String(),
 		PartID:      []string{uuid.New().String()},
@@ -81,7 +77,6 @@ func TestUpdateLaborLineInput_ToLaborLine(t *testing.T) {
 
 	// Verify all fields are set correctly
 	assert.Equal(t, input.LaborLineID, laborLine.LaborLineID)
-	assert.Equal(t, input.ContactID, laborLine.ContactID)
 	assert.Equal(t, input.AccountID, laborLine.AccountID)
 	assert.Equal(t, input.TaskID, laborLine.TaskID)
 	assert.Equal(t, input.PartID, laborLine.PartID)

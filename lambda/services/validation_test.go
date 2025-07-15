@@ -27,7 +27,6 @@ func TestValidationService_ValidateCreateInput(t *testing.T) {
 		{
 			name: "Valid input with all fields",
 			input: models.CreateLaborLineInput{
-				ContactID: uuid.New().String(),
 				AccountID: uuid.New().String(),
 				TaskID:    uuid.New().String(),
 				PartID:    []string{uuid.New().String(), uuid.New().String()},
@@ -38,50 +37,28 @@ func TestValidationService_ValidateCreateInput(t *testing.T) {
 		{
 			name: "Valid input with required fields only",
 			input: models.CreateLaborLineInput{
-				ContactID: uuid.New().String(),
 				AccountID: uuid.New().String(),
 				TaskID:    uuid.New().String(),
 			},
 			wantError: false,
 		},
 		{
-			name: "Missing contactId",
-			input: models.CreateLaborLineInput{
-				AccountID: uuid.New().String(),
-				TaskID:    uuid.New().String(),
-			},
-			wantError: true,
-		},
-		{
 			name: "Missing accountId",
 			input: models.CreateLaborLineInput{
-				ContactID: uuid.New().String(),
-				TaskID:    uuid.New().String(),
+				TaskID: uuid.New().String(),
 			},
 			wantError: true,
 		},
 		{
 			name: "Missing taskId",
 			input: models.CreateLaborLineInput{
-				ContactID: uuid.New().String(),
 				AccountID: uuid.New().String(),
 			},
 			wantError: true,
-		},
-		{
-			name: "Invalid contactId UUID",
-			input: models.CreateLaborLineInput{
-				ContactID: "invalid-uuid",
-				AccountID: uuid.New().String(),
-				TaskID:    uuid.New().String(),
-			},
-			wantError: true,
-			errorMsg:  "invalid UUID format",
 		},
 		{
 			name: "Invalid accountId UUID",
 			input: models.CreateLaborLineInput{
-				ContactID: uuid.New().String(),
 				AccountID: "invalid-uuid",
 				TaskID:    uuid.New().String(),
 			},
@@ -91,7 +68,6 @@ func TestValidationService_ValidateCreateInput(t *testing.T) {
 		{
 			name: "Invalid taskId UUID",
 			input: models.CreateLaborLineInput{
-				ContactID: uuid.New().String(),
 				AccountID: uuid.New().String(),
 				TaskID:    "invalid-uuid",
 			},
@@ -101,7 +77,6 @@ func TestValidationService_ValidateCreateInput(t *testing.T) {
 		{
 			name: "Invalid partId UUID",
 			input: models.CreateLaborLineInput{
-				ContactID: uuid.New().String(),
 				AccountID: uuid.New().String(),
 				TaskID:    uuid.New().String(),
 				PartID:    []string{"invalid-uuid"},
@@ -112,7 +87,6 @@ func TestValidationService_ValidateCreateInput(t *testing.T) {
 		{
 			name: "Empty note",
 			input: models.CreateLaborLineInput{
-				ContactID: uuid.New().String(),
 				AccountID: uuid.New().String(),
 				TaskID:    uuid.New().String(),
 				Notes:     []string{""},
@@ -122,7 +96,6 @@ func TestValidationService_ValidateCreateInput(t *testing.T) {
 		{
 			name: "Note too long",
 			input: models.CreateLaborLineInput{
-				ContactID: uuid.New().String(),
 				AccountID: uuid.New().String(),
 				TaskID:    uuid.New().String(),
 				Notes:     []string{generateLongString(1001)},
@@ -160,7 +133,6 @@ func TestValidationService_ValidateUpdateInput(t *testing.T) {
 			name: "Valid update input",
 			input: models.UpdateLaborLineInput{
 				LaborLineID: uuid.New().String(),
-				ContactID:   uuid.New().String(),
 				AccountID:   uuid.New().String(),
 				TaskID:      uuid.New().String(),
 				PartID:      []string{uuid.New().String()},
@@ -172,7 +144,6 @@ func TestValidationService_ValidateUpdateInput(t *testing.T) {
 			name: "Valid update input with required fields only",
 			input: models.UpdateLaborLineInput{
 				LaborLineID: uuid.New().String(),
-				ContactID:   uuid.New().String(),
 				AccountID:   uuid.New().String(),
 				TaskID:      uuid.New().String(),
 			},
@@ -181,7 +152,6 @@ func TestValidationService_ValidateUpdateInput(t *testing.T) {
 		{
 			name: "Missing laborLineId",
 			input: models.UpdateLaborLineInput{
-				ContactID: uuid.New().String(),
 				AccountID: uuid.New().String(),
 				TaskID:    uuid.New().String(),
 			},
@@ -191,7 +161,6 @@ func TestValidationService_ValidateUpdateInput(t *testing.T) {
 			name: "Invalid laborLineId UUID",
 			input: models.UpdateLaborLineInput{
 				LaborLineID: "invalid-uuid",
-				ContactID:   uuid.New().String(),
 				AccountID:   uuid.New().String(),
 				TaskID:      uuid.New().String(),
 			},
@@ -229,7 +198,6 @@ func TestValidationService_validateUUIDs(t *testing.T) {
 			name: "Valid UUIDs",
 			data: map[string]interface{}{
 				"laborLineId": uuid.New().String(),
-				"contactId":   uuid.New().String(),
 				"accountId":   uuid.New().String(),
 				"taskId":      uuid.New().String(),
 				"partId":      []string{uuid.New().String(), uuid.New().String()},

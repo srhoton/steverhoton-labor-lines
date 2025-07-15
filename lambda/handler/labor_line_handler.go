@@ -29,7 +29,7 @@ func (h *LaborLineHandler) HandleAppSyncEvent(ctx context.Context, event models.
 	// AppSync Direct Lambda Resolvers send field information in the info object
 	fieldName := event.Info.FieldName
 	typeName := event.Info.ParentTypeName
-	
+
 	log.Printf("Processing AppSync event: %s.%s", typeName, fieldName)
 
 	switch fieldName {
