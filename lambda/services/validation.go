@@ -57,11 +57,6 @@ func NewValidationServiceWithEmbeddedSchema() ValidationService {
 				"format": "uuid",
 				"description": "Unique identifier for the labor line"
 			},
-			"contactId": {
-				"type": "string",
-				"format": "uuid",
-				"description": "Identifier of the contact who will perform the work"
-			},
 			"accountId": {
 				"type": "string",
 				"format": "uuid",
@@ -93,7 +88,6 @@ func NewValidationServiceWithEmbeddedSchema() ValidationService {
 		},
 		"required": [
 			"laborLineId",
-			"contactId",
 			"accountId",
 			"taskId"
 		],
@@ -116,7 +110,6 @@ func (s *validationService) ValidateCreateInput(input models.CreateLaborLineInpu
 	// Convert to a map that includes a generated laborLineId for validation
 	validationData := map[string]interface{}{
 		"laborLineId": uuid.New().String(), // Temporary ID for validation
-		"contactId":   input.ContactID,
 		"accountId":   input.AccountID,
 		"taskId":      input.TaskID,
 	}
@@ -135,7 +128,6 @@ func (s *validationService) ValidateCreateInput(input models.CreateLaborLineInpu
 func (s *validationService) ValidateUpdateInput(input models.UpdateLaborLineInput) error {
 	validationData := map[string]interface{}{
 		"laborLineId": input.LaborLineID,
-		"contactId":   input.ContactID,
 		"accountId":   input.AccountID,
 		"taskId":      input.TaskID,
 	}
@@ -177,7 +169,7 @@ func (s *validationService) validateData(data map[string]interface{}) error {
 
 // validateUUIDs validates that all UUID fields are properly formatted.
 func (s *validationService) validateUUIDs(data map[string]interface{}) error {
-	uuidFields := []string{"laborLineId", "contactId", "accountId", "taskId"}
+	uuidFields := []string{"laborLineId", "accountId", "taskId"}
 
 	for _, field := range uuidFields {
 		if value, exists := data[field]; exists {

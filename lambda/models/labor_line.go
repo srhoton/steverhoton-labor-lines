@@ -12,7 +12,6 @@ import (
 type LaborLine struct {
 	// Required fields from schema
 	LaborLineID string `json:"laborLineId" dynamodbav:"laborLineId"`
-	ContactID   string `json:"contactId" dynamodbav:"contactId"`
 	AccountID   string `json:"accountId" dynamodbav:"accountId"`
 	TaskID      string `json:"taskId" dynamodbav:"taskId"`
 
@@ -32,7 +31,6 @@ type LaborLine struct {
 
 // CreateLaborLineInput represents the input for creating a new labor line.
 type CreateLaborLineInput struct {
-	ContactID string   `json:"contactId"`
 	AccountID string   `json:"accountId"`
 	TaskID    string   `json:"taskId"`
 	PartID    []string `json:"partId,omitempty"`
@@ -42,7 +40,6 @@ type CreateLaborLineInput struct {
 // UpdateLaborLineInput represents the input for updating an existing labor line.
 type UpdateLaborLineInput struct {
 	LaborLineID string   `json:"laborLineId"`
-	ContactID   string   `json:"contactId"`
 	AccountID   string   `json:"accountId"`
 	TaskID      string   `json:"taskId"`
 	PartID      []string `json:"partId,omitempty"`
@@ -76,7 +73,6 @@ func NewLaborLine(input CreateLaborLineInput) *LaborLine {
 
 	return &LaborLine{
 		LaborLineID: laborLineID,
-		ContactID:   input.ContactID,
 		AccountID:   input.AccountID,
 		TaskID:      input.TaskID,
 		PartID:      input.PartID,
@@ -92,7 +88,6 @@ func NewLaborLine(input CreateLaborLineInput) *LaborLine {
 func (input UpdateLaborLineInput) ToLaborLine() *LaborLine {
 	return &LaborLine{
 		LaborLineID: input.LaborLineID,
-		ContactID:   input.ContactID,
 		AccountID:   input.AccountID,
 		TaskID:      input.TaskID,
 		PartID:      input.PartID,

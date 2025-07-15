@@ -76,14 +76,12 @@ func TestAppSyncEvent_GetArgumentAs(t *testing.T) {
 }
 
 func TestAppSyncEvent_GetInputArgument(t *testing.T) {
-	contactID := uuid.New().String()
 	accountID := uuid.New().String()
 	taskID := uuid.New().String()
 
 	event := AppSyncEvent{
 		Arguments: map[string]interface{}{
 			"input": map[string]interface{}{
-				"contactId": contactID,
 				"accountId": accountID,
 				"taskId":    taskID,
 				"notes":     []interface{}{"Test note"},
@@ -95,7 +93,6 @@ func TestAppSyncEvent_GetInputArgument(t *testing.T) {
 	err := event.GetInputArgument(&input)
 
 	require.NoError(t, err)
-	assert.Equal(t, contactID, input.ContactID)
 	assert.Equal(t, accountID, input.AccountID)
 	assert.Equal(t, taskID, input.TaskID)
 	assert.Equal(t, []string{"Test note"}, input.Notes)
@@ -111,7 +108,6 @@ func TestAppSyncEvent_GetInputArgument_NoInput(t *testing.T) {
 
 	assert.NoError(t, err)
 	// Should be zero value since no input was provided
-	assert.Empty(t, input.ContactID)
 	assert.Empty(t, input.AccountID)
 	assert.Empty(t, input.TaskID)
 }

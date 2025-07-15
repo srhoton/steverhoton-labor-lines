@@ -10,11 +10,6 @@
       "format": "uuid",
       "description": "Unique identifier for the labor line"
     },
-    "contactId": {
-      "type": "string",
-      "format": "uuid",
-      "description": "Identifier of the contact who will perform the work"
-    },
     "accountId": {
       "type": "string",
       "format": "uuid",
@@ -46,7 +41,6 @@
   },
   "required": [
     "laborLineId",
-    "contactId",
     "accountId",
     "taskId"
   ],
@@ -54,7 +48,6 @@
   "examples": [
     {
       "laborLineId": "550e8400-e29b-41d4-a716-446655440000",
-      "contactId": "550e8400-e29b-41d4-a716-446655440001",
       "accountId": "550e8400-e29b-41d4-a716-446655440002",
       "taskId": "550e8400-e29b-41d4-a716-446655440003",
       "partId": [
@@ -68,7 +61,6 @@
     },
     {
       "laborLineId": "550e8400-e29b-41d4-a716-446655440006",
-      "contactId": "550e8400-e29b-41d4-a716-446655440007",
       "accountId": "550e8400-e29b-41d4-a716-446655440008",
       "taskId": "550e8400-e29b-41d4-a716-446655440009"
     }
