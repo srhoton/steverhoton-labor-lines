@@ -37,6 +37,11 @@
         "maxLength": 1000
       },
       "description": "Optional notes describing the work to be performed"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Optional description of the labor line work"
     }
   },
   "required": [
@@ -57,7 +62,8 @@
       "notes": [
         "Replace worn brake pads",
         "Check brake fluid level"
-      ]
+      ],
+      "description": "Complete brake system maintenance and inspection"
     },
     {
       "laborLineId": "550e8400-e29b-41d4-a716-446655440006",
