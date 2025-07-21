@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "AWS region for deploying resources"
   type        = string
-  default     = "us-east-1"
+  default     = "us-west-2"
 
   validation {
     condition     = can(regex("^[a-z0-9-]+$", var.aws_region))
@@ -12,7 +12,7 @@ variable "aws_region" {
 variable "project_name" {
   description = "Name of the project, used for resource naming"
   type        = string
-  default     = "labor-lines"
+  default     = "sr-labor-line"
 
   validation {
     condition     = can(regex("^[a-zA-Z][a-zA-Z0-9-]*$", var.project_name))
@@ -23,11 +23,11 @@ variable "project_name" {
 variable "environment" {
   description = "Environment name (e.g., dev, staging, prod)"
   type        = string
-  default     = "prod"
+  default     = "sandbox"
 
   validation {
-    condition     = contains(["dev", "staging", "prod"], var.environment)
-    error_message = "Environment must be one of: dev, staging, prod."
+    condition     = contains(["dev", "staging", "prod", "sandbox"], var.environment)
+    error_message = "Environment must be one of: dev, staging, prod, sandbox."
   }
 }
 
