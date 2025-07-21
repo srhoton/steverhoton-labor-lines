@@ -1,8 +1,8 @@
 # Local values for computed and reused values
 locals {
   name_prefix            = "${var.project_name}-${var.environment}"
-  lambda_function_name   = "${local.name_prefix}-labor-lines-handler"
-  dynamodb_table_name    = "${local.name_prefix}-labor-lines"
+  lambda_function_name   = "${var.project_name}-${var.environment}"
+  dynamodb_table_name    = "${var.project_name}-${var.environment}"
   log_group_name         = "/aws/lambda/${local.lambda_function_name}"
   iam_role_name          = "${local.name_prefix}-lambda-execution-role"
   lambda_source_dir      = "${path.module}/../lambda"

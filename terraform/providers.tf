@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket = "srhoton-tfstate"
-    key    = "steverhoton-labor-lines"
-    region = "us-east-1"
+    bucket = "steve-rhoton-tfstate"
+    key    = "sr-labor-line-sandbox"
+    region = "us-west-2"
   }
 }
 
